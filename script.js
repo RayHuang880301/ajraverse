@@ -10,8 +10,8 @@ let speed = 2;
 var dx = speed;
 var dy = -speed;
 
-var ballRadius = 25;
-var paddleHeight = 10;
+var ballRadius = 50;
+var paddleHeight = 100;
 var paddleWidth = 100;
 var paddleX = (canvas.width-paddleWidth)/2;
 var rightPressed = false;
@@ -24,7 +24,7 @@ var brickPadding = 7;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 var score = 0;
-var lives = 3;
+var lives = 1;
 var modeColor = 'row';
 
 let failure = document.querySelector('.failure');
@@ -53,20 +53,20 @@ successBtn.addEventListener('click', () => {
 	reloadPage();
 });
 
-const speedSlider = document.querySelector("#speed-slider");
+// const speedSlider = document.querySelector("#speed-slider");
 
-speedSlider.addEventListener("input", () => {
-    speed = speedSlider.value;
+// speedSlider.addEventListener("input", () => {
+//     speed = speedSlider.value;
 
-	dx = speed;
-	dy = -speed;
-})
+// 	dx = speed;
+// 	dy = -speed;
+// })
 
-const sizeSlider = document.querySelector("#size-slider");
+// const sizeSlider = document.querySelector("#size-slider");
 
-sizeSlider.addEventListener("input", () => {
-	ballRadius = sizeSlider.value;
-})
+// sizeSlider.addEventListener("input", () => {
+// 	ballRadius = sizeSlider.value;
+// })
 
 changeBrickColumnCountAndOffsetLeft()
 let bricks = [];
@@ -115,10 +115,20 @@ function drawBricks() {
 	}
 }
 
+// function drawImg() {
+//   let img = new Image();
+//   img.src = './assets/coinbase.png';
+//   ctx.drawImage(img);
+// }
+
+
 function drawBall() {
 	ctx.beginPath();
-	ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-	ctx.fillStyle = "#FFFF00";
+  let img = new Image();
+  img.src = './assets/coinbase.png';
+  ctx.drawImage(img, x, y, ballRadius, ballRadius);
+  // ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+	// ctx.fillStyle = "#FFFF00";
 	// ctx.fillStyle = utilsColor(c,r, "random"); // To make the ball random colours.
 	ctx.fill();
 	ctx.closePath();
@@ -126,8 +136,11 @@ function drawBall() {
 
 function drawPaddle() {
 	ctx.beginPath();
-	ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-	ctx.fillStyle = "pink";
+  let img = new Image();
+  img.src = './assets/arjaverse.png';
+  ctx.drawImage(img, paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+	// ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+	// ctx.fillStyle = "pink";
 	ctx.fill();
 	ctx.closePath();
 }
@@ -178,9 +191,10 @@ function drawLives() {
 }
 
 function draw() {
-	ctx.clearRect(0,0, canvas.width, canvas.height);
-	drawBricks()
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	// drawBricks()
 	drawBall();
+  // drawImg();
 	drawPaddle();
 	drawScore();
 	collisionDetection();
@@ -188,8 +202,18 @@ function draw() {
 	if(y + dy < ballRadius) {
 		dy = -dy;
 	} else if (y + dy > canvas.height-ballRadius) {
+		if(ballRadius > 10) {
+			ballRadius = ballRadius * 0.8;
+		}
 		if(x > paddleX && x < paddleX + paddleWidth) {
-			dy = -dy;
+			// new add
+			console.log("dy", dy);
+			if(dy > 10) {
+				dy = -dy;
+			} else {
+				dy = -dy * 1.2;
+			}
+			score++;
 		} else {
 			lives--;
 			if(!lives) {
@@ -221,7 +245,7 @@ function draw() {
 
 	x += dx;
 	y += dy;
-	drawLives();
+	// drawLives();
 	requestAnimationFrame(draw);
 }
 
