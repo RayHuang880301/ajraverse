@@ -16,13 +16,6 @@ var paddleWidth = 100;
 var paddleX = (canvas.width - paddleWidth) / 2;
 var rightPressed = false;
 var leftPressed = false;
-var brickRowCount = 5;
-var brickColumnCount = 8;
-var brickWidth = 100;
-var brickHeight = 15;
-var brickPadding = 7;
-var brickOffsetTop = 30;
-var brickOffsetLeft = 30;
 var score = 0;
 var lives = 1;
 var modeColor = "row";
@@ -51,79 +44,6 @@ failureBtn.addEventListener("click", () => {
 successBtn.addEventListener("click", () => {
   reloadPage();
 });
-
-// const speedSlider = document.querySelector("#speed-slider");
-
-// speedSlider.addEventListener("input", () => {
-//     speed = speedSlider.value;
-
-// 	dx = speed;
-// 	dy = -speed;
-// })
-
-// const sizeSlider = document.querySelector("#size-slider");
-
-// sizeSlider.addEventListener("input", () => {
-// 	ballRadius = sizeSlider.value;
-// })
-
-changeBrickColumnCountAndOffsetLeft();
-let bricks = [];
-for (c = 0; c < brickColumnCount; c++) {
-  bricks[c] = [];
-  for (r = 0; r < brickRowCount; r++) {
-    bricks[c][r] = {
-      x: 0,
-      y: 0,
-      status: 1,
-      lives: getRandomArbitrary(1, 5, true),
-    };
-  }
-}
-
-/*
-document.addEventListener("keydown", keyDownHandler);
-document.addEventListener("keyup", keyUpHandler);
-*/
-
-function changeBrickColumnCountAndOffsetLeft() {
-  let lengthBriks =
-    brickColumnCount * (brickWidth + brickPadding) + brickOffsetLeft;
-  while (lengthBriks >= canvas.width) {
-    brickColumnCount = brickColumnCount - 1;
-    lengthBriks =
-      brickColumnCount * (brickWidth + brickPadding) + brickOffsetLeft;
-  }
-  brickOffsetLeft = (canvas.width - lengthBriks + brickOffsetLeft) / 2;
-}
-
-function drawBricks() {
-  for (c = 0; c < brickColumnCount; c++) {
-    for (r = 0; r < brickRowCount; r++) {
-      if (bricks[c][r].status == 1) {
-        let brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-        let brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-        bricks[c][r].x = brickX;
-        bricks[c][r].y = brickY;
-        ctx.beginPath();
-        ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = utilsColor(c, r, modeColor);
-        ctx.fill();
-
-        // ddraw block lives
-        ctx.font = `${brickHeight - 2}px Arial`;
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillText(
-          bricks[c][r].lives,
-          brickX + brickWidth / 2,
-          brickY + brickHeight - 2
-        );
-
-        ctx.closePath();
-      }
-    }
-  }
-}
 
 // function drawImg() {
 //   let img = new Image();
@@ -160,65 +80,18 @@ function drawPaddle() {
   ctx.closePath();
 }
 
-function collisionDetection() {
-  for (c = 0; c < brickColumnCount; c++) {
-    for (r = 0; r < brickRowCount; r++) {
-      let b = bricks[c][r];
-      console.log(b);
-      if (b.status == 1) {
-        sideCollision = false;
-        if (
-          x + ballRadius > b.x &&
-          x - ballRadius < b.x + brickWidth &&
-          y + ballRadius > b.y &&
-          y - ballRadius < b.y + brickHeight
-        ) {
-          if (y > b.y && y < b.y + brickHeight) {
-            if (x < b.x || x > b.x + brickWidth) {
-              dx = -dx;
-              sideCollision = true;
-            }
-          }
-
-          if (!sideCollision) {
-            dy = -dy;
-          }
-
-          b.lives -= 1;
-          if (b.lives == 0) {
-            b.status = 0;
-            score++;
-          }
-          if (score == brickRowCount * brickColumnCount) {
-            resetValues(success);
-          }
-          return;
-        }
-      }
-    }
-  }
-}
-
 function drawScore() {
   ctx.font = "16px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("Score: " + score, 8, 20);
 }
 
-function drawLives() {
-  ctx.font = "16px Arial";
-  ctx.fillStyle = "white";
-  ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
-}
-
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // drawBricks();
   drawBall();
   // drawImg();
   drawPaddle();
   drawScore();
-  collisionDetection();
   const nextBallY = y + dy;
   const paddleHead = canvas.height - ballRadius - sealHeight;
   const paddleFoot = canvas.height - ballRadius;
@@ -238,20 +111,24 @@ function draw() {
     }
     // TODO: detect x, y and paddleX, paddleY, paddleWidth, paddleHeight
     if (ispaddleCollision) {
-      // new add
-      if (dy > 10) {
+      // highest speed
+      if (dy > 8) {
         dy = -dy;
       } else {
-        dy = -dy * 1.2;
+        dy = -dy * 1.1;
       }
       score++;
+      document.getElementById('win').textContent = score;
     }
 
+    //over
     if (isBottomCollision) {
       lives--;
       if (!lives) {
-        resetValues(failure);
-        drawLives();
+        if(score==0){
+          resetValues(failure);
+        }
+        else resetValues(success);
         return;
       } else {
         // reset
@@ -276,7 +153,6 @@ function draw() {
 
   x += dx;
   y += dy;
-  // drawLives();
   requestAnimationFrame(draw);
 }
 
