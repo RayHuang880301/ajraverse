@@ -134,7 +134,7 @@ function drawBricks() {
 function drawBall() {
   ctx.beginPath();
   let img = new Image();
-  img.src = "./assets/coinbase.png";
+  img.src = "http://139.162.88.46/assets/Ball/Penguin.png";
   ctx.drawImage(img, x, y, ballRadius, ballRadius);
   // ctx.arc(x, y, ballRadius, 0, Math.PI*2);
   // ctx.fillStyle = "#FFFF00";
@@ -221,7 +221,7 @@ function draw() {
   collisionDetection();
   const nextBallY = y + dy;
   const paddleHead = canvas.height - ballRadius - sealHeight;
-  const paddleFoot = canvas.height - ballRadius - sealHeight + 10;
+  const paddleFoot = canvas.height - ballRadius;
   const ispaddleCollision =
     nextBallY >= paddleHead &&
     nextBallY <= paddleFoot && // y 軸碰海豹
@@ -230,7 +230,7 @@ function draw() {
 
   const isBottomCollision = nextBallY >= frameBottomY;
 
-  if (y + dy < ballRadius) {
+  if (y + dy < 0) {
     dy = -dy;
   } else if (y + dy > canvas.height - ballRadius - sealHeight) {
     if (isBottomCollision && ballRadius > 10) {
@@ -263,7 +263,7 @@ function draw() {
       }
     }
   }
-  if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+  if (x + dx > canvas.width - ballRadius || x + dx < 0) {
     dx = -dx;
     dy += getRandomArbitrary(-0.4, 0.4);
   }
