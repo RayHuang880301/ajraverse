@@ -1,5 +1,7 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+
+
 var sealHeight = 75;
 const frameBottomY = canvas.height - 30;
 var x = canvas.width / 2;
@@ -54,7 +56,8 @@ successBtn.addEventListener("click", () => {
 function drawBall() {
   ctx.beginPath();
   let img = new Image();
-  img.src = "http://139.162.88.46/assets/Ball/Penguin.png";
+  // img.src = "http://139.162.88.46/assets/Ball/Penguin.png";
+  img.src = "./assets/coinbase.png";
   ctx.drawImage(img, x, y, ballRadius, ballRadius);
   // ctx.arc(x, y, ballRadius, 0, Math.PI*2);
   // ctx.fillStyle = "#FFFF00";
@@ -67,15 +70,15 @@ function drawPaddle() {
   ctx.beginPath();
   let img = new Image();
   img.src = "./assets/arjaverse.png";
-  ctx.drawImage(
-    img,
-    paddleX,
-    canvas.height - paddleHeight,
-    paddleWidth,
-    paddleHeight
-  );
-  // ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-  // ctx.fillStyle = "pink";
+  // ctx.drawImage(
+  //   img,
+  //   paddleX,
+  //   canvas.height - paddleHeight,
+  //   paddleWidth,
+  //   paddleHeight
+  // );
+  ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+  ctx.fillStyle = "pink";
   ctx.fill();
   ctx.closePath();
 }
@@ -86,6 +89,7 @@ function drawScore() {
   ctx.fillText("Score: " + score, 8, 20);
 }
 
+var isOnRebounce = false;
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBall();
@@ -112,11 +116,14 @@ function draw() {
     // TODO: detect x, y and paddleX, paddleY, paddleWidth, paddleHeight
     if (ispaddleCollision) {
       // highest speed
-      if (dy > 8) {
-        dy = -dy;
-      } else {
-        dy = -dy * 1.1;
+      if(dy <= 0) {
+        return;
       }
+      dy = -dy;
+      // if (dy > 8) {
+      // } else {
+      //   dy = -dy * 1.1;
+      // }
       score++;
       document.getElementById('win').textContent = score;
     }
@@ -197,3 +204,15 @@ function keyDownHandler(e) {
 }
 
 draw();
+
+window.onload = function() {
+  nftBackground();
+};
+function nftBackground() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var bgColor = urlParams.get('bg');
+  console.log(bgColor);
+  var cv = document.getElementById("myCanvas");
+  cv.style.backgroundColor = "#" + bgColor;
+  
+}

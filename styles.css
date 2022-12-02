@@ -28,7 +28,7 @@ main{
 }
 
 #myCanvas {
-	background: rgb(55, 54, 54);
+	/* background: rgb(55, 54, 54); */
 	display: block;
 	height: 90vh;
 	margin-top: 5vh;
