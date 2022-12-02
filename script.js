@@ -104,6 +104,7 @@ function draw() {
     nextBallY <= paddleFoot && // y 軸碰海豹
     x > paddleX &&
     x < paddleX + paddleWidth; // x 軸碰海豹
+    
 
   const isBottomCollision = nextBallY >= frameBottomY;
 
@@ -115,6 +116,12 @@ function draw() {
     }
     // TODO: detect x, y and paddleX, paddleY, paddleWidth, paddleHeight
     if (ispaddleCollision) {
+      var isSideCollision = x < paddleX || x > paddleX + paddleWidth;
+      if(isSideCollision){
+        dx = -dx;
+        sideCollision = true;
+      }
+
       // highest speed
       if(dy <= 0) {
         return;
