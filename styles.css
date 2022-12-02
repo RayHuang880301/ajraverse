@@ -9,7 +9,7 @@ body{
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	background-color: rgb(67, 66, 66);
+	background-color: rgb(66, 67, 67);
 	color: white;
 	height: 100vh;
 }
@@ -27,21 +27,12 @@ main{
 	width: 95%;
 }
 
-.game-container{
-	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
-	justify-content: space-between;
-}
-
-.game-container section{
-	width: 30%;
-}
-
 #myCanvas {
 	background: rgb(55, 54, 54);
 	display: block;
-	margin: 10px;
+	height: 90vh;
+	margin-top: 5vh;
+	max-width: 100vw;
 }
 
 .alert {
@@ -55,22 +46,22 @@ main{
 	top: -40%;
 	text-align: center;
 	margin: 0 auto;
-	max-width: 400px;
+	max-width: 40vw;
 	border-radius: 5px;
 }
 
 .alert.failure, .alert.failure strong {
-	background-color: #f44336;
+	background-color: #d04b42;
 }
 
 .alert.success, .alert.success strong {
-	background-color: #04AA6D;
+	background-color: #2a9b71;
 }
 
 .close {
 	border-radius: 6px;
 	display: block;
-	margin-left: 10px;
+	/* margin-left: 10px; */
 	background-color: transparent;
 	border: thin solid white;
 	color: white;
@@ -84,66 +75,13 @@ main{
 
 #successBtn:hover {
 	background-color: white;
-	color: #04AA6D;
+	color: #2a9b71;
 }
 
 #failureBtn:hover {
 	background-color: white;
-	color: #f44336;
+	color: #d04b42;
 }
-
-.game-info{
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: flex-start;
-	background-color: rgb(55, 54, 54, 0.5);
-	border: 2px solid black;
-	border-radius: 5px;
-	padding: 20px;
-}
-
-.game-option{
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	background-color: rgb(55, 54, 54, 0.5);
-	border: 2px solid black;
-	border-radius: 5px;
-	padding: 20px;
-}
-
-#size-container, .speed-container{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	margin-top: 20px;
-}
-
-.heading{
-	font-size:30px;
-	font-weight: bold;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-footer {
-	background-color: #121315;
-	font-size: 16px;
-	width: 100%;
-	height: 5vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-  }
-
-  .copyright p {
-	font-size: 0.9em;
-	text-align: right;
-  }
 
   @media screen and (max-width: 850px) {
 	.row.primary {
